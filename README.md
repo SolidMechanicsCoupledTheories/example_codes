@@ -1,7 +1,7 @@
 # Coupled theories FEniCS codes
 A collection of FEniCS finite element codes for a wide array of coupled-physics theories in solid mechanics.
 
-Constructed by Lallit Anand (anand@mit.edu) and Eric M. Stewart (ericstew@mit.edu).
+Constructed by Eric M. Stewart (ericstew@mit.edu) and  Lallit Anand (anand@mit.edu).
 
 A selection of example codes are currently provided for: 
 1. Finite elasticity
@@ -19,6 +19,6 @@ Alternatively, you can run any FEniCS *.py code hosted publicly on GitHub by fol
 
 If you use these codes in your own research, cite both of the following:
 
-E. Stewart and L. Anand. Example codes for coupled theories in solid mechanics, 2023. URL https://github.com/SolidMechanicsCoupledTheories/example_codes.
+E. M. Stewart and L. Anand. Example codes for coupled theories in solid mechanics, 2023. URL https://github.com/SolidMechanicsCoupledTheories/example_codes.
 
 L. Anand. _Introduction to coupled theories in solid mechanics_. 2023, in preparation.
