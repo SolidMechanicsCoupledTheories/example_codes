@@ -119,7 +119,7 @@ dt   = 5       # Fixed step size
 
 # Boundary condition expressions as necessary
 muAmp = Expression(("mu0*exp(-t/td)"),
-                mu0 = mu0, td = ttd, t = 0.0, degree=2)
+                mu0 = float(mu0), td = ttd, t = 0.0, degree=2)
 
 '''''''''''''''''''''
 Function spaces

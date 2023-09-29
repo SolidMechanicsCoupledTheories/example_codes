@@ -197,7 +197,7 @@ dt   = 50       # Fixed step size
 # 
 mu0 = ln(1.0-phi0) + phi0 # Initialize chemical potential, corresponding to nearly dry polymer.
 muAmp = Expression(("mu0*exp(-t/td)"),
-                mu0 = mu0, td = ttd, t = 0.0, degree=1)
+                mu0 = float(mu0), td = ttd, t = 0.0, degree=1)
 
 '''''''''''''''''''''
 Function spaces

@@ -131,7 +131,7 @@ dt   = 100        # Fixed step size
 # Boundary condition expression for increasing  the chemical potential
 # 
 muAmp = Expression(("mu0*exp(-t/td)"),
-                mu0 = mu0, td = ttd, t = 0.0, degree=1)
+                mu0 = float(mu0), td = ttd, t = 0.0, degree=1)
 
 '''''''''''''''''''''
 Function spaces
