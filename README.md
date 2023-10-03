@@ -7,6 +7,7 @@ A selection of example codes are currently provided for:
 1. Finite elasticity
 2. Finite thermo-elasticity
 3. Gel mechanics
+4. Gel thermo-mechanics
 
 ## Running the codes
 
