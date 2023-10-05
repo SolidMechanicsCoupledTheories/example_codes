@@ -190,7 +190,7 @@ RT       = 8.3145e6*theta0
 Simulation time-control related params
 """
 t    = 0.0      # initialization of time
-Ttot = 3600  # total simulation time 
+Ttot = 3600*2  # total simulation time 
 ttd  = 300      # Decay time constant
 dt   = 25      # Fixed step size
 
