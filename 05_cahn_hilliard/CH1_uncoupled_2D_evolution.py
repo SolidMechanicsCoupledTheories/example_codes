@@ -213,6 +213,36 @@ def fc_calc(mu, c):
     #
     return fc
 
+# Eigenvalue decomposition of a 2D tensor
+def eigs(T):
+    
+    # Compute eigenvalues
+    lambda1_0 = T[0, 0]/2 + T[1, 1]/2 - sqrt(T[0, 0]**2 - 2*T[0, 0]*T[1, 1] + 4*T[0, 1]*T[1, 0] + T[1, 1]**2)/2
+    lambda2_0 = T[0, 0]/2 + T[1, 1]/2 + sqrt(T[0, 0]**2 - 2*T[0, 0]*T[1, 1] + 4*T[0, 1]*T[1, 0] + T[1, 1]**2)/2
+    
+    # Compute eigenvectors
+    v11 = -T[1, 1] + lambda1_0
+    v12 = T[1, 0]
+    
+    v21 = -T[1,1] + lambda2_0
+    v22 = T[1,0]
+    
+    vec1_0 = as_vector([v11, v12])
+    vec2_0 = as_vector([v21, v22])
+    
+    # Normalize eigenvectors
+    vec1_0 = vec1_0/sqrt(dot(vec1_0, vec1_0))
+    vec2_0 = vec2_0/sqrt(dot(vec2_0, vec2_0))
+    
+    # Reorder eigenvectors and eigenvalues
+    vec1 = conditional(ge(lambda1_0, lambda2_0), vec1_0, vec2_0)
+    vec2 = conditional(ge(lambda1_0, lambda2_0), vec2_0, vec1_0)
+    
+    lambda1 = conditional(ge(lambda1_0, lambda2_0), lambda1_0, lambda2_0)
+    lambda2 = conditional(ge(lambda1_0, lambda2_0), lambda2_0, lambda1_0)
+    
+    return lambda1, lambda2, vec1, vec2
+
 '''''''''''''''''''''''''''''
 Kinematics and constitutive relations
 '''''''''''''''''''''''''''''
