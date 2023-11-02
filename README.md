@@ -8,7 +8,8 @@ A selection of example codes are currently provided for:
 2. Finite thermo-elasticity
 3. Gel mechanics
 4. Gel thermo-mechanics
-5. Cahn-Hilliard
+5. Chemo-mechanically coupled Cahn-Hilliard
+6. Dielectric elastomers (electro-elasticity)
 
 ## Running the codes
 
