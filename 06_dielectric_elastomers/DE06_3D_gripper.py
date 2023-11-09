@@ -98,28 +98,18 @@ MATERIAL PARAMETERS
 '''''''''''''''''''''
 
 # Mechanical parameters
-Geq_0   = 77         # Shear modulus, kPa
+Geq_0   = 15         # Shear modulus, kPa
 Kbulk   = 1e3*Geq_0  # Bulk modulus, kPa
-I_m     = 90         # Gent locking paramter
+I_m     = 175         # Gent locking paramter
 # Electrostatic  parameters
 vareps_0 = Constant(8.85E-3)         #  permittivity of free space pF/mm
-vareps_r = Constant(4.8)             #  relative permittivity, dimensionless
+vareps_r = Constant(5)             #  relative permittivity, dimensionless
 vareps   = vareps_r*vareps_0         #  permittivity of the material
 
 
-# # Simulation time control-related params
-# t        = 0.0         # start time (s)
-# phiTot   = 5.9 # final phi (number in kV)
-# Ttot     = 1 # Total time (s)
-# dt       = 0.05       # (fixed) step size
-# dk       = Constant(dt)
-
-# # Boundary condition to ramp up electrostatic potential
-# phiAmp = Expression(("phiTot*t/tRamp"),
-#                     t = 0.0, phiTot = phiTot, tRamp=Ttot, degree=1)
 
 # Define expression for applying sinusiodal voltage
-phitot = 10 # kV
+phitot = 4.4# kV
 t      = 0.0                  # start time (s)
 freq   = 1                    # frequency in Hz, cycles/s
 omega  = 2.*np.pi*freq        # angular frequency radians/s
@@ -284,7 +274,7 @@ a = derivative(Res, w, dw)
  SET UP OUTPUT FILES
 '''''''''''''''''''''
 # Output file setup
-file_results = XDMFFile("results/3D_gripper_actuate.xdmf")
+file_results = XDMFFile("results/gripper_actuate_n1.xdmf")
 # "Flush_output" permits reading the output during simulation
 # (Although this causes a minor performance hit)
 file_results.parameters["flush_output"] = True
@@ -403,13 +393,14 @@ electrostaticProblem = NonlinearVariationalProblem(Res, w, bcs, J=a)
 # Set up the non-linear solver
 solver  = NonlinearVariationalSolver(electrostaticProblem)
 
-# Solver parameters
+#Solver parameters
 prm = solver.parameters
 prm['nonlinear_solver'] = 'newton'
-prm['newton_solver']['linear_solver'] = 'mumps' #'mumps' # 'petsc'   #'gmres'
-prm['newton_solver']['absolute_tolerance'] =  1.e-8
-prm['newton_solver']['relative_tolerance'] =  1.e-8
-prm['newton_solver']['maximum_iterations'] = 30
+prm['newton_solver']['linear_solver'] = "mumps" 
+prm['newton_solver']['absolute_tolerance']   = 1.e-8
+prm['newton_solver']['relative_tolerance']   = 1.e-7
+prm['newton_solver']['maximum_iterations']   = 25
+prm['newton_solver']['relaxation_parameter'] = 1.0
 prm['newton_solver']['error_on_nonconvergence'] = False
 
 # Initalize output array for tip displacement
@@ -453,7 +444,7 @@ while (round(t + dt, 9) <= Ttot):
         
         # Iteration-based adaptive time-stepping
         #
-        # If the newton solver takes 2 or less iterations, 
+        # If the newton solver takes 3 or less iterations, 
         # increase the time step by a factor of 1.5:
         if iter<=3:
             dt = 1.5*dt
@@ -565,7 +556,7 @@ fig, (ax1, ax2) = plt.subplots(2,1, sharex='col')
 Volts = timeHist1
 color = 'blue'
 ax1.set_ylabel(r'$\phi$, kV')
-ax1.set_ylim(-11, 11)
+ax1.set_ylim(-5, 5)
 ax1.grid(linestyle="--", linewidth=0.5, color='b')
 #
 ax1.plot(timeHist0[0:ind],Volts[0:ind],  color=color, linewidth=2.0, marker='.')
@@ -592,4 +583,4 @@ plt.show()
 fig = plt.gcf()
 fig.set_size_inches(6, 4)
 plt.tight_layout()
-plt.savefig("results/sinusoidal_beam_bending.png", dpi=600)
+plt.savefig("results/gripper_results_n1.png", dpi=600)

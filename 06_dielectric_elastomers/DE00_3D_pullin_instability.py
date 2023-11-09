@@ -120,13 +120,12 @@ ds = Measure('ds', domain=mesh, subdomain_data=facets)
 MATERIAL PARAMETERS
 '''''''''''''''''''''
 # Mechanical parameters
-Geq_0   = 77         # Shear modulus, kPa
+Geq_0   = 15         # Shear modulus, kPa
 Kbulk   = 1e3*Geq_0  # Bulk modulus, kPa
-I_m     = 90         # Gent locking paramter
-#I_m     = 6          # Gent locking paramter
+I_m     = 175        # Gent locking paramter
 # Electrostatic  parameters
 vareps_0 = Constant(8.85E-3)         #  permittivity of free space pF/mm
-vareps_r = Constant(4.8)             #  relative permittivity, dimensionless
+vareps_r = Constant(5)             #  relative permittivity, dimensionless
 vareps   = vareps_r*vareps_0         #  permittivity of the material
 
 # Simulation time control-related params
@@ -135,6 +134,14 @@ rampRate = 1e-1     # s^{-1}
 Ttot = 1.0/rampRate # total simulation time (s) 
 numSteps = 100
 dt   = Constant(Ttot/numSteps)       # (fixed) step size
+
+# Normalization parameter for voltage: l*sqrt(Geq_0/vareps)
+#
+phiTot = float(length*np.sqrt(float(Geq_0)/float(vareps)))  # final normalized value of phi
+
+# Boundary condition to ramp up electrostatic potential
+phiRamp = Expression(("phi_tot*t/Ttot"), 
+                     t = 0.0, phi_tot = phiTot, Ttot=Ttot, degree=1)
 
 '''''''''''''''''''''
 FEM SETUP
@@ -277,7 +284,7 @@ a = derivative(Res, w, dw)
  SET UP OUTPUT FILES
 '''''''''''''''''''''
 # Output file setup
-file_results = XDMFFile("results/3D_pullin_Im90.xdmf")
+file_results = XDMFFile("results/3D_pullin_Im175.xdmf")
 file_results.parameters["flush_output"] = True
 file_results.parameters["functions_share_mesh"] = True
 
@@ -370,13 +377,7 @@ step = "Actuate"
 '''''''''''''''''''''''
 Boundary conditions
 '''''''''''''''''''''''
-# Normalization parameter for voltage: l*sqrt(Geq_0/vareps)
-#
-phiTot = float(length*np.sqrt(float(Geq_0)/float(vareps)))  # final normalized value of phi
 
-# Boundary condition to ramp up electrostatic potential
-phiRamp = Expression(("phi_tot*t/Ttot"), 
-                     t = 0.0, phi_tot = phiTot, Ttot=Ttot, degree=1)
 
 
 bcs_1 = DirichletBC(ME.sub(0).sub(0), 0, facets, 1)    # fix u1 degree  on face1 
@@ -397,13 +398,15 @@ electrostaticProblem = NonlinearVariationalProblem(Res, w, bcs, J=a)
 # Set up the non-linear solver
 solver  = NonlinearVariationalSolver(electrostaticProblem)
 
-# Solver parameters
+#Solver parameters
 prm = solver.parameters
 prm['nonlinear_solver'] = 'newton'
-prm['newton_solver']['linear_solver'] = 'mumps' #'mumps' # 'petsc'   #'gmres'
-prm['newton_solver']['absolute_tolerance'] =  1.e-8
-prm['newton_solver']['relative_tolerance'] =  1.e-8
-prm['newton_solver']['maximum_iterations'] = 30
+prm['newton_solver']['linear_solver'] = "mumps" 
+prm['newton_solver']['absolute_tolerance']   = 1.e-8
+prm['newton_solver']['relative_tolerance']   = 1.e-7
+prm['newton_solver']['maximum_iterations']   = 25
+prm['newton_solver']['relaxation_parameter'] = 1.0
+#prm['newton_solver']['error_on_nonconvergence'] = False
 
 # Initalize output array for tip displacement
 totSteps = numSteps+1
@@ -440,14 +443,15 @@ while (round(t + dt, 9) <= Ttot):
     timeHist0[ii] = w.sub(0).sub(2)(length, length, length) # time history of displacement
     timeHist1[ii] = w.sub(2)(length, length, length)        # time history of voltage phi
 
-    # Print progress of calculation
+    # print progress of calculation 
     if ii%1 == 0:      
         now = datetime.now()
         current_time = now.strftime("%H:%M:%S")
-        print("Step: {} | Simulation Time: {} s, Wallclock Time: {}".\
-              format(step, round(t,4), current_time))
-        print("Iterations: {}".format(iter))
-        print()  
+        print("Step: {} |   Increment: {} | Iterations: {}".format(step, ii, iter))
+        print("Simulation Time: {} s | dt: {} s".format(round(t,2), round(dt, 3)))
+        print()   
+            
+
 
 # Report elapsed real time for whole analysis
 endTime = datetime.now()
@@ -500,4 +504,4 @@ plt.show()
 fig = plt.gcf()
 fig.set_size_inches(6,4)
 plt.tight_layout()
-plt.savefig("results/cube_pullin_Im90.png", dpi=600)
+plt.savefig("results/cube_pullin_Im175.png", dpi=600)

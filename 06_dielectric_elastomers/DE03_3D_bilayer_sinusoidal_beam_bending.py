@@ -116,12 +116,12 @@ ds = Measure('ds', domain=mesh, subdomain_data=facets)
 MODEL & SIMULATION PARAMETERS
 '''''''''''''''''''''''''''''''''''''''
 # Mechanical parameters
-Geq_0   = 77         # Shear modulus, kPa
+Geq_0   = 15         # Shear modulus, kPa
 Kbulk   = 1e3*Geq_0  # Bulk modulus, kPa
-I_m     = 90         # Gent locking paramter
+I_m     = 175         # Gent locking paramter
 # Electrostatic  parameters
 vareps_0 = Constant(8.85E-3)         #  permittivity of free space pF/mm
-vareps_r = Constant(4.8)             #  relative permittivity, dimensionless
+vareps_r = Constant(5)             #  relative permittivity, dimensionless
 vareps   = vareps_r*vareps_0         #  permittivity of the material
 
 
@@ -138,7 +138,7 @@ vareps   = vareps_r*vareps_0         #  permittivity of the material
 #                     t = 0.0, tC = Ttot, phi_tot = phitot, degree=1)
 
 # Define expression for applying sinusiodal voltage
-phitot = 10 # kv
+phitot = 5 # kV
 t      = 0.0                  # start time (s)
 freq   = 1                    # frequency in Hz, cycles/s
 omega  = 2.*np.pi*freq        # angular frequency radians/s
@@ -328,7 +328,7 @@ bcs = [bcs_0, bcs_1, bcs_2, bcs_3, bcs_4, bcs_5, bcs_6, bcs_7, bcs_8, bcs_9]
 '''''''''''''''''''''
 
 # Output file setup
-file_results = XDMFFile("results/3D_electroelastic_sinusoidal_bending.xdmf")
+file_results = XDMFFile("results/sinusoidal_beam_bending_n1.xdmf")
 # "Flush_output" permits reading the output during simulation
 # (Although this causes a minor performance hit)
 file_results.parameters["flush_output"] = True
@@ -501,7 +501,7 @@ fig, (ax1, ax2) = plt.subplots(2,1, sharex='col')
 Volts = timeHist1
 color = 'blue'
 ax1.set_ylabel(r'$\phi$, kV')
-ax1.set_ylim(-11, 11)
+ax1.set_ylim(-6, 6)
 ax1.grid(linestyle="--", linewidth=0.5, color='b')
 #
 ax1.plot(timeHist0[0:ind],Volts[0:ind],  color=color, linewidth=2.0, marker='.')
@@ -510,7 +510,7 @@ ax1.plot(timeHist0[0:ind],Volts[0:ind],  color=color, linewidth=2.0, marker='.')
 Displacement = timeHist2
 color = 'red'
 ax2.set_ylabel(r'Tip disp., mm')
-ax2.set_ylim(-14, 1.0)
+ax2.set_ylim(-20, 1.0)
 ax2.grid(linestyle="--", linewidth=0.5, color='b')
 #
 ax2.plot(timeHist0[0:ind], Displacement[0:ind],  c=colors[1],\
@@ -524,5 +524,5 @@ ax2.set_xlabel(r"Time,s")
 fig = plt.gcf()
 fig.set_size_inches(8, 5)
 plt.tight_layout()
-plt.savefig("results/sinusoidal_beam_bending.png", dpi=600)
+plt.savefig("results/sinusoidal_beam_bending_n1.png", dpi=600)
 

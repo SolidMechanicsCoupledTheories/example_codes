@@ -90,17 +90,17 @@ ds = Measure("ds", domain=mesh, subdomain_data=mf)
 MATERIAL PARAMETERS
 '''''''''''''''''''''
 # Mechanical parameters
-Geq_0   = 77         # Shear modulus, kPa
+Geq_0   = 15         # Shear modulus, kPa
 Kbulk   = 1e3*Geq_0  # Bulk modulus, kPa
-I_m     = 90         # Gent locking paramter
+I_m     = 175         # Gent locking paramter
 # Electrostatic  parameters
 vareps_0 = Constant(8.85E-3)         #  permittivity of free space pF/mm
-vareps_r = Constant(4.8)             #  relative permittivity, dimensionless
+vareps_r = Constant(5)             #  relative permittivity, dimensionless
 vareps   = vareps_r*vareps_0         #  permittivity of the material
 
 # Simulation time control-related params
 t        = 0.0         # start time (s)
-phiTot   = 3.5         # final phi (number in kV)
+phiTot   = 2.0         # final phi (number in kV)
 Ttot     = 1           # Total time (s)
 dt       = 0.01        # (fixed) step size
 dk       = Constant(dt)
@@ -255,7 +255,7 @@ a = derivative(Res, w, dw)
  SET UP OUTPUT FILES
 '''''''''''''''''''''
 # Output file setup
-file_results = XDMFFile("results/3D_helix_actuate.xdmf")
+file_results = XDMFFile("results/helix_actuate_n1.xdmf")
 file_results.parameters["flush_output"] = True
 file_results.parameters["functions_share_mesh"] = True
 
@@ -366,13 +366,14 @@ electrostaticProblem = NonlinearVariationalProblem(Res, w, bcs, J=a)
 # Set up the non-linear solver
 solver  = NonlinearVariationalSolver(electrostaticProblem)
 
-# Solver parameters
+#Solver parameters
 prm = solver.parameters
 prm['nonlinear_solver'] = 'newton'
-prm['newton_solver']['linear_solver'] = 'mumps' #'mumps' # 'petsc'   #'gmres'
-prm['newton_solver']['absolute_tolerance'] =  1.e-8
-prm['newton_solver']['relative_tolerance'] =  1.e-8
-prm['newton_solver']['maximum_iterations'] = 30
+prm['newton_solver']['linear_solver'] = "mumps" 
+prm['newton_solver']['absolute_tolerance']   = 1.e-8
+prm['newton_solver']['relative_tolerance']   = 1.e-7
+prm['newton_solver']['maximum_iterations']   = 25
+prm['newton_solver']['relaxation_parameter'] = 1.0
 prm['newton_solver']['error_on_nonconvergence'] = False
 
 # Initalize output array for tip displacement
@@ -505,4 +506,4 @@ ax2.yaxis.set_minor_locator(AutoMinorLocator())
 fig = plt.gcf()
 fig.set_size_inches(7,5)
 plt.tight_layout()
-plt.savefig("results/Helix_actuate.png", dpi=600)
+plt.savefig("results/helix_actuate_n1.png", dpi=600)
