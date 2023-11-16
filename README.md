@@ -15,7 +15,7 @@ A selection of example codes are currently provided for:
 
 Example animation: 
 
-![] (https://github.com/SolidMechanicsCoupledTheories/example_codes/blob/main/example_animation.gif)
+![](https://github.com/SolidMechanicsCoupledTheories/example_codes/blob/main/example_animation.gif)
 
 ## Running the codes
 
