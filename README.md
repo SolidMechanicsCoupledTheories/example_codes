@@ -13,6 +13,10 @@ A selection of example codes are currently provided for:
 7. Finite deformation viscoelasticity with inertial effects
 8. Electro-viscoelasticity of dielectric elastomers with inertial effects
 
+Example animation: 
+
+![] (https://github.com/SolidMechanicsCoupledTheories/example_codes/blob/main/example_animation.gif)
+
 ## Running the codes
 
 We recommend running the FEniCS codes locally and using ParaView to visualize the results. 
