@@ -1,4 +1,4 @@
-# Coupled theories FEniCS codes
+# Coupled theories FEniCS codes (Research release)
 A collection of FEniCS finite element codes for a wide array of coupled-physics theories in solid mechanics.
 
 Constructed by Eric M. Stewart (ericstew@mit.edu) and  Lallit Anand (anand@mit.edu).
