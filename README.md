@@ -12,6 +12,7 @@ A selection of example codes are currently provided for:
 6. Electro-elasticity of dielectric elastomers
 7. Finite deformation viscoelasticity with inertial effects
 8. Electro-viscoelasticity of dielectric elastomers with inertial effects
+9. Finite deformation rate-independent isotropic plasticity
 
 ![](https://github.com/SolidMechanicsCoupledTheories/example_codes/blob/main/example_animation.gif)
 
