@@ -28,6 +28,6 @@ Alternatively, you can run any FEniCS *.py code hosted on a public GitHub reposi
 
 If you use these codes in your own research, cite both of the following:
 
-E. M. Stewart and L. Anand. Example codes for coupled theories in solid mechanics, 2023. URL https://github.com/SolidMechanicsCoupledTheories/example_codes.
+- E. M. Stewart and L. Anand. Example codes for coupled theories in solid mechanics, 2023. URL https://github.com/SolidMechanicsCoupledTheories/example_codes.
 
-L. Anand. _Introduction to coupled theories in solid mechanics_. 2023, in preparation.
+- L. Anand, E.M. Stewart, & S.A. Chester. _Introduction to coupled theories in solid mechanics_. 2025, in preparation.
